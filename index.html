@@ -10,15 +10,15 @@
          ========================================== -->
     <style>
         :root {
-            --primary: #1e293b;
-            --accent: #2563eb;
-            --accent-hover: #1540b5;
-            --danger: #dc2626;
-            --danger-hover: #b91c1c;
-            --success: #16a34a;
+            --primary: #e6e9ef;
+            --accent: #36cdf3;
+            --accent-hover: #2759e1;
+            --danger: #dc2699;
+            --danger-hover: #c81d89;
+            --success: #1ca7ae;
             --bg: #09223a;
-            --surface: #c94fea;
-            --border: #a136e9;
+            --surface: #09110c;
+            --border: #4ac9ff;
         }
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -45,7 +45,7 @@
         }
         h2, h3 { margin-top: 0; font-weight: 700; color: var(--primary); text-transform: uppercase;}
         h2 { text-align: center; margin-bottom: 5px; }
-        p.subtitle { text-align: center; color: #64748b; margin-bottom: 25px; font-size: 0.9em; }
+        p.subtitle { text-align: center; color: #dadadb; margin-bottom: 25px; font-size: 0.9em; }
         
         .form-group { margin-bottom: 20px; }
         label { display: block; margin-bottom: 8px; font-weight: 600; font-size: 0.95em; }
@@ -55,8 +55,8 @@
             font-size: 14px; transition: 0.3s ease;
         }
         textarea:focus, select:focus, input:focus { outline: none; border-color: var(--accent); }
-        textarea { resize: vertical; height: 100px; text-transform: uppercase; }
-        input { text-transform: uppercase; }
+        textarea { resize: vertical; height: 100px; }
+        input { }
         
         .btn-group { display: flex; gap: 15px; margin-top: 20px; }
         button {
@@ -79,7 +79,7 @@
         .console-wrapper {
             background-color: #030712;
             border-radius: 12px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.3), 0 0 0 1px rgba(255,255,255,0.1);
+            box-shadow: 0 20px 40px #4ac9ff, 0 0 0 1px #4ac9ff;
             overflow: hidden;
             display: flex;
             flex-direction: column;
@@ -99,7 +99,7 @@
         .dot.yellow { background-color: #ffbd2e; box-shadow: 0 0 6px rgba(255, 189, 46, 0.5); }
         .dot.green { background-color: #27c93f; box-shadow: 0 0 6px rgba(39, 201, 63, 0.5); }
         .console-title {
-            color: #64748b; font-family: 'Courier New', monospace; font-size: 13px; margin-left: auto; margin-right: auto;
+            color: #e4e9f0; font-family: 'Courier New', monospace; font-size: 13px; margin-left: auto; margin-right: auto;
         }
         
         /* Inner Console Area */
@@ -160,20 +160,20 @@
          ========================================== -->
     <div class="container">
         <h2>Crypto System</h2>
-        <p class="subtitle">Lecture-Based Encryption/Decryption Tool</p>
+        <p class="subtitle">Encryption/Decryption Tool</p>
 
         <div class="form-group">
-            <label for="inputText">Message (Plaintext / Ciphertext):</label>
+            <label for="inputText">Message (Plaintext):</label>
             <textarea id="inputText" placeholder="e.g., HELLO WORLD"></textarea>
         </div>
 
         <div class="form-group">
-            <label for="cipherMethod">Encryption Algorithm:</label>
+            <label for="cipherMethod">Traditional Encryption Algorithm:</label>
             <select id="cipherMethod" onchange="updateUI()">
-                <option value="additive">1. Additive Cipher (Slide 18)</option>
-                <option value="simple">2. Simple Cipher (Slide 16)</option>
-                <option value="vigenere">3. Vigenère Cipher (Slide 24)</option>
-                <option value="railfence">4. Rail Fence Cipher (Slide 30)</option>
+                <option value="additive">1. Additive Cipher</option>
+                <option value="simple">2. Simple Cipher</option>
+                <option value="vigenere">3. Vigenère Cipher</option>
+                <option value="railfence">4. Rail Fence Cipher</option>
             </select>
         </div>
 
@@ -189,7 +189,7 @@
         </div>
 
         <div class="form-group" style="margin-top: 25px;">
-            <label for="outputText">Output Result:</label>
+            <label for="outputText">Output Result (Ciphertext):</label>
             <textarea id="outputText" readonly placeholder="Result will appear here..."></textarea>
             <button id="btn-copy" onclick="copyToClipboard()">Copy Result</button>
         </div>
@@ -204,12 +204,12 @@
             <span class="dot red"></span>
             <span class="dot yellow"></span>
             <span class="dot green"></span>
-            <span class="console-title">crypto_terminal ~ node v2.0</span>
+            <span class="console-title">Step-by-step Encryption/Decryption</span>
         </div>
         
         <!-- Text Output Area -->
         <div id="stepConsole" class="step-console">
-            <div><span class="prompt">➜</span> <span class="success">SYSTEM READY.</span> Select an algorithm and await execution.</div>
+            <div><span class="prompt">➜</span> <span class="success">SYSTEM READY.</span> Select an algorithm and execute.</div>
         </div>
     </div>
 </div>
@@ -225,14 +225,18 @@
         const keyInput = document.getElementById('cipherKey');
         document.getElementById('keyError').style.display = 'none';
 
-        if (method === 'additive') keyInput.placeholder = 'Enter a numerical shift (e.g., 7)';
+        if (method === 'additive') keyInput.placeholder = 'Enter a numerical shift (e.g., 5)';
         else if (method === 'simple') keyInput.placeholder = 'Enter a text keyword (e.g., BLUECAT)';
         else if (method === 'vigenere') keyInput.placeholder = 'Enter a text keyword (e.g., TENNIS)';
-        else if (method === 'railfence') keyInput.placeholder = 'Enter number of row stages (e.g., 3)';
+        else if (method === 'railfence') keyInput.placeholder = 'Enter number of row stages (e.g., 6)';
     }
 
     async function executeProcess(action) {
-        let text = document.getElementById('inputText').value.toUpperCase().replace(/[^A-Z]/g, '');
+        let originalText = document.getElementById('inputText').value;
+        // Keep spaces and other characters, only remove if needed? No, we preserve all characters.
+        // We will uppercase letters but keep spaces/punctuation as is.
+        let text = originalText; // keep original spacing
+        
         const method = document.getElementById('cipherMethod').value;
         let key = document.getElementById('cipherKey').value.toUpperCase();
         
@@ -243,7 +247,7 @@
         
         let resultObj = { output: '', steps: [] };
 
-        if (!text) return alert("Please enter a valid alphabetic message to process.");
+        if (!text.trim()) return alert("Please enter a valid message to process.");
         errorMsg.style.display = 'none';
 
         try {
@@ -268,7 +272,7 @@
             
             // --- CONSOLE ANIMATION PHASE ---
             encryptBtn.disabled = true; decryptBtn.disabled = true;
-            outputBox.value = "Executing encryption protocol...";
+            outputBox.value = "Executing encryption algorithm...";
             
             const consoleDiv = document.getElementById('stepConsole');
             consoleDiv.innerHTML = `<div><span class="prompt">➜</span> <span class="highlight">INITIALIZING ${method.toUpperCase()} ALGORITHM</span>...</div>`;
@@ -279,7 +283,6 @@
             for (let i = 0; i < resultObj.steps.length; i++) {
                 await delay(speed);
                 const stepLine = document.createElement('div');
-                // Prefix every generated step with the cool pink arrow ➜
                 stepLine.innerHTML = `<span class="prompt">➜</span> ${resultObj.steps[i]}`;
                 consoleDiv.appendChild(stepLine);
                 consoleDiv.scrollTop = consoleDiv.scrollHeight;
@@ -308,7 +311,7 @@
     }
 
     // ==========================================
-    // ALGORITHMS 
+    // ALGORITHMS (PRESERVE NON-LETTERS)
     // ==========================================
 
     function additiveCipher(text, shift, isDecrypt) {
@@ -317,12 +320,19 @@
         let steps = [`<span class="badge">ADDITIVE</span> Mode: ${isDecrypt ? 'Decrypt' : 'Encrypt'} | Shift: ${shift}`];
         
         for (let i = 0; i < text.length; i++) {
-            let pCode = text.charCodeAt(i) - 65; 
-            let cCode = (pCode + actualShift) % 26;
-            let newChar = String.fromCharCode(cCode + 65);
-            
-            steps.push(`Map: '${text[i]}' (Code ${pCode}) + ${actualShift} = ${cCode} &rarr; '<span class="success">${newChar}</span>'`);
-            output += newChar;
+            let ch = text[i];
+            if (/[A-Za-z]/.test(ch)) {
+                let upper = ch.toUpperCase();
+                let pCode = upper.charCodeAt(0) - 65;
+                let cCode = (pCode + actualShift) % 26;
+                let newChar = String.fromCharCode(cCode + 65);
+                // Preserve original case? We output uppercase as per typical ciphers.
+                output += newChar;
+                steps.push(`Letter '${upper}' (${pCode}) + ${actualShift} = ${cCode} → '<span class="success">${newChar}</span>'`);
+            } else {
+                output += ch;
+                steps.push(`Preserved non‑letter: '<span class="highlight">${ch}</span>' (unchanged)`);
+            }
         }
         return { output, steps };
     }
@@ -340,17 +350,23 @@
         
         let output = '';
         for (let i = 0; i < text.length; i++) {
-            let char = text[i];
-            if (isDecrypt) {
-                let index = cipherAlpha.indexOf(char);
-                let newChar = standardAlpha[index];
-                steps.push(`Decode: '${char}' &rarr; '<span class="success">${newChar}</span>'`);
-                output += newChar;
+            let ch = text[i];
+            if (/[A-Za-z]/.test(ch)) {
+                let upper = ch.toUpperCase();
+                if (isDecrypt) {
+                    let index = cipherAlpha.indexOf(upper);
+                    let newChar = standardAlpha[index];
+                    output += newChar;
+                    steps.push(`Decode: '${upper}' → '<span class="success">${newChar}</span>'`);
+                } else {
+                    let index = standardAlpha.indexOf(upper);
+                    let newChar = cipherAlpha[index];
+                    output += newChar;
+                    steps.push(`Encode: '${upper}' → '<span class="success">${newChar}</span>'`);
+                }
             } else {
-                let index = standardAlpha.indexOf(char);
-                let newChar = cipherAlpha[index];
-                steps.push(`Encode: '${char}' &rarr; '<span class="success">${newChar}</span>'`);
-                output += newChar;
+                output += ch;
+                steps.push(`Preserved non‑letter: '<span class="highlight">${ch}</span>' (unchanged)`);
             }
         }
         return { output, steps };
@@ -359,38 +375,48 @@
     function vigenereCipher(text, key, isDecrypt) {
         let output = '';
         let steps = [`<span class="badge">VIGENÈRE</span> Mode: ${isDecrypt ? 'Decrypt' : 'Encrypt'} | Key: ${key}`];
-
+        let keyIndex = 0;
+        
         for (let i = 0; i < text.length; i++) {
-            let pCode = text.charCodeAt(i) - 65;
-            let kChar = key.charAt(i % key.length);
-            let kCode = kChar.charCodeAt(0) - 65;
-            
-            let cCode;
-            if (isDecrypt) {
-                cCode = (pCode - kCode + 26) % 26;
-                steps.push(`'${text[i]}' [${pCode}] - Key '${kChar}' [${kCode}] = ${cCode} &rarr; '<span class="success">${String.fromCharCode(cCode + 65)}</span>'`);
+            let ch = text[i];
+            if (/[A-Za-z]/.test(ch)) {
+                let upper = ch.toUpperCase();
+                let pCode = upper.charCodeAt(0) - 65;
+                let kChar = key.charAt(keyIndex % key.length);
+                let kCode = kChar.charCodeAt(0) - 65;
+                let cCode;
+                if (isDecrypt) {
+                    cCode = (pCode - kCode + 26) % 26;
+                    steps.push(`'${upper}' [${pCode}] - Key '${kChar}' [${kCode}] = ${cCode} → '<span class="success">${String.fromCharCode(cCode + 65)}</span>'`);
+                } else {
+                    cCode = (pCode + kCode) % 26;
+                    steps.push(`'${upper}' [${pCode}] + Key '${kChar}' [${kCode}] = ${cCode} → '<span class="success">${String.fromCharCode(cCode + 65)}</span>'`);
+                }
+                output += String.fromCharCode(cCode + 65);
+                keyIndex++;
             } else {
-                cCode = (pCode + kCode) % 26;
-                steps.push(`'${text[i]}' [${pCode}] + Key '${kChar}' [${kCode}] = ${cCode} &rarr; '<span class="success">${String.fromCharCode(cCode + 65)}</span>'`);
+                output += ch;
+                steps.push(`Preserved non‑letter: '<span class="highlight">${ch}</span>' (unchanged)`);
             }
-            output += String.fromCharCode(cCode + 65);
         }
         return { output, steps };
     }
 
     function railFenceEncrypt(text, rails) {
+        // For rail fence, we need to handle non-letters as part of the pattern
         let fence = Array.from({ length: rails }, () => []);
         let row = 0, direction = 1;
         let steps = [`<span class="badge">RAIL FENCE</span> Mode: Encrypt | Rows: ${rails}`];
-
-        for (let char of text) {
-            fence[row].push(char);
-            steps.push(`Routing character '<span class="highlight">${char}</span>' to Row ${row + 1}`);
+        
+        for (let i = 0; i < text.length; i++) {
+            let ch = text[i];
+            fence[row].push(ch);
+            steps.push(`Placing character '<span class="highlight">${ch}</span>' into Row ${row + 1}`);
             row += direction;
-            if (row === rails - 1 || row === 0) direction *= -1; 
+            if (row === rails - 1 || row === 0) direction *= -1;
         }
         
-        steps.push(`Generating linear sequence from zig-zag rows...`);
+        steps.push(`Generating final ciphertext by reading rows sequentially...`);
         let output = fence.map(r => r.join('')).join('');
         return { output, steps };
     }
@@ -405,8 +431,8 @@
             row += direction;
             if (row === rails - 1 || row === 0) direction *= -1;
         }
-
-        steps.push(`Building transposition matrix map...`);
+        
+        steps.push(`Building position markers in matrix...`);
         let index = 0;
         for (let r = 0; r < rails; r++) {
             for (let c = 0; c < text.length; c++) {
@@ -415,8 +441,8 @@
                 }
             }
         }
-
-        steps.push(`Reading matrix off zig-zag trace to recover data...`);
+        
+        steps.push(`Reconstructing original by zig‑zag reading...`);
         let output = '';
         row = 0; direction = 1;
         for (let i = 0; i < text.length; i++) {
