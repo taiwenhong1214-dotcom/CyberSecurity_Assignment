@@ -105,7 +105,7 @@
         /* Inner Console Area */
         .step-console {
             background-image: radial-gradient(circle at center, #111827 0%, #030712 100%);
-            color: #94a3b8; /* Soft blueish-grey default text */
+            color: #f4f7fa;
             font-family: 'Courier New', Courier, monospace;
             padding: 20px;
             flex-grow: 1;
@@ -118,7 +118,7 @@
         .step-console div {
             padding: 4px 0;
             border-bottom: 1px dashed rgba(255,255,255,0.05);
-            animation: slideFadeIn 0.4s ease-out forwards;
+            animation: slideFadeIn 0.5s ease-out forwards;
             opacity: 0; 
         }
         @keyframes slideFadeIn {
@@ -278,7 +278,7 @@
             consoleDiv.innerHTML = `<div><span class="prompt">➜</span> <span class="highlight">INITIALIZING ${method.toUpperCase()} ALGORITHM</span>...</div>`;
 
             // Adjust speed dynamically based on output length
-            const speed = resultObj.steps.length > 20 ? 40 : 100; 
+            const speed = resultObj.steps.length > 20 ? 150 : 400; 
 
             for (let i = 0; i < resultObj.steps.length; i++) {
                 await delay(speed);
