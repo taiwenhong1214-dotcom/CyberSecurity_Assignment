@@ -42,6 +42,7 @@
             border-radius: 12px;
             box-shadow: 0 10px 25px rgba(0,0,0,0.05);
             border: 1px solid var(--border);
+            align-self: start;
         }
         h2, h3 { margin-top: 0; font-weight: 700; color: var(--primary); text-transform: uppercase;}
         h2 { text-align: center; margin-bottom: 5px; }
@@ -196,23 +197,34 @@
     </div>
 
     <!-- ==========================================
-         RIGHT COLUMN: Beautiful Live Console
+         RIGHT COLUMN: Beautiful Live Console & GIF
          ========================================== -->
-    <div class="console-wrapper">
-        <!-- MacOS style window header -->
-        <div class="console-header">
-            <span class="dot red"></span>
-            <span class="dot yellow"></span>
-            <span class="dot green"></span>
-            <span class="console-title">Step-by-step Encryption/Decryption</span>
-        </div>
+    <div class="right-column" style="display: flex; flex-direction: column; gap: 20px;">
         
-        <!-- Text Output Area -->
-        <div id="stepConsole" class="step-console">
-            <div>
-                <span class="prompt">➜</span> 
-                <span class="success">SYSTEM READY.</span> Select an algorithm and execute.</div>
+        <div class="console-wrapper">
+            <!-- MacOS style window header -->
+            <div class="console-header">
+                <span class="dot red"></span>
+                <span class="dot yellow"></span>
+                <span class="dot green"></span>
+                <span class="console-title">Step-by-step Encryption/Decryption</span>
+            </div>
+            
+            <!-- Text Output Area -->
+            <div id="stepConsole" class="step-console">
+                <div>
+                    <span class="prompt">➜</span> 
+                    <span class="success">SYSTEM READY.</span> Select an algorithm and execute.</div>
+            </div>
         </div>
+
+        <!-- GIF PLACED OUTSIDE & BELOW THE CONSOLE WINDOW -->
+        <div class="gif-container" style="text-align: center;">
+            <img src="computer.gif" alt="My Custom Animation" style="max-width: 80%; height: 80%;">
+        </div>
+
+
+
     </div>
 </div>
 
