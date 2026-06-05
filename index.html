@@ -209,7 +209,9 @@
         
         <!-- Text Output Area -->
         <div id="stepConsole" class="step-console">
-            <div><span class="prompt">➜</span> <span class="success">SYSTEM READY.</span> Select an algorithm and execute.</div>
+            <div>
+                <span class="prompt">➜</span> 
+                <span class="success">SYSTEM READY.</span> Select an algorithm and execute.</div>
         </div>
     </div>
 </div>
@@ -225,16 +227,16 @@
         const keyInput = document.getElementById('cipherKey');
         document.getElementById('keyError').style.display = 'none';
 
-        if (method === 'additive') keyInput.placeholder = 'Enter a numerical shift (e.g., 5)';
-        else if (method === 'simple') keyInput.placeholder = 'Enter a text keyword (e.g., BLUECAT)';
-        else if (method === 'vigenere') keyInput.placeholder = 'Enter a text keyword (e.g., TENNIS)';
-        else if (method === 'railfence') keyInput.placeholder = 'Enter number of row stages (e.g., 6)';
+        if (method === 'additive') keyInput.placeholder = 'Enter a numerical shift (ex: 8)';
+        else if (method === 'simple') keyInput.placeholder = 'Enter a text keyword (ex: BLUECAT)';
+        else if (method === 'vigenere') keyInput.placeholder = 'Enter a text keyword (ex: TENNIS)';
+        else if (method === 'railfence') keyInput.placeholder = 'Enter number of row stages (ex: 6)';
     }
 
     async function executeProcess(action) {
         let originalText = document.getElementById('inputText').value;
-        // Keep spaces and other characters, only remove if needed? No, we preserve all characters.
-        // We will uppercase letters but keep spaces/punctuation as is.
+        // Preserve all characters
+        // We will uppercase letters but keep spaces/punctuation as is
         let text = originalText; // keep original spacing
         
         const method = document.getElementById('cipherMethod').value;
@@ -290,7 +292,7 @@
 
             await delay(400);
             const completeLine = document.createElement('div');
-            completeLine.innerHTML = `<br><span class="prompt">➜</span> <span class="success">PROCESS COMPLETE.</span> Output saved to memory.`;
+            completeLine.innerHTML = `<br><span class="prompt">➜</span> <span class="success">Encryption / Decryption process complete.</span>`;
             consoleDiv.appendChild(completeLine);
             consoleDiv.scrollTop = consoleDiv.scrollHeight;
 
