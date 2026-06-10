@@ -208,7 +208,7 @@ The application is a \*\*single HTML file\*\* with inline CSS and JavaScript. No
 
 BCC2213\_MAY26SEM\_ASSIGNMENT1\_SUKD2502284/
 
-├── crypto\_system.html (main program – all code in one file)
+├── index.html (main program – all code in one file)
 
 ├── computer.gif (optional animation, referenced by the HTML)
 
