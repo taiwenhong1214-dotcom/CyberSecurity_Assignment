@@ -100,7 +100,7 @@ The application is a \*\*single HTML file\*\* with inline CSS and JavaScript. No
 
 
 
-1\. Download or copy the file `crypto\_system.html` (the provided HTML code).
+1\. Download or copy the file `index.html` (the provided HTML code).
 
 2\. (Optional) Place a custom `computer.gif` in the same folder – the page references this image. If the file is missing, the browser will show a broken image icon (the system still works).
 
