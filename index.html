@@ -19,7 +19,7 @@
             --border: #4ac9ff;
         }
 
-        /* 纵向布局 */
+        /* Vertical layout */
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: var(--bg);
@@ -32,7 +32,7 @@
             justify-content: flex-start;
         }
 
-        /* ----- 简化版滚动 Banner ----- */
+        /* ----- Scrolling Banner ----- */
         .banner-wrapper {
             width: calc(100% + 40px);
             margin: -20px -20px 24px -20px;
@@ -102,7 +102,7 @@
             .banner-content { gap: 16px; padding: 0 10px; }
         }
 
-        /* ----- 主体样式 ----- */
+        /* ----- Main style ----- */
         .main-wrapper {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -173,7 +173,7 @@
             transition: all 0.3s ease;
             background-color: rgba(30, 40, 50, 0.6);
             box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3), 0 0 0 0 rgba(0, 217, 255, 0.1);
-            /* 让输入的文字更亮 */
+            /* Make the word more brighter */
             color: #ffffff;
         }
         textarea:focus, select:focus, input:focus { 
@@ -183,7 +183,7 @@
         }
         textarea { resize: vertical; height: 100px; }
 
-        /* 让占位符文字（suggestion message）更亮 */
+        /* Make the suggestion msg more brighter */
         ::placeholder {
             color: #b0c7e0;
             opacity: 1;
@@ -334,10 +334,10 @@
 </head>
 <body>
 
-    <!-- 简化版 Banner -->
+    <!-- Banner -->
     <div class="banner-wrapper">
         <div class="banner-track">
-            <!-- 第一部分 -->
+            <!-- First part -->
             <div class="banner-content">
                 <span class="banner-tag"><i class="fas fa-lock icon"></i> <span class="highlight-text">Decryption</span> System</span>
                 <span class="banner-separator"></span>
@@ -351,7 +351,7 @@
                 <span class="banner-separator"></span>
                 <span class="banner-tag"><i class="fas fa-shield-alt icon"></i> INFORMATION <span class="danger-text">CYBERSECURITY</span></span>
             </div>
-            <!-- 第二部分（完整复制实现无缝滚动） -->
+            <!-- Second part -->
             <div class="banner-content">
                 <span class="banner-tag"><i class="fas fa-lock icon"></i> <span class="highlight-text">Decryption</span> System</span>
                 <span class="banner-separator"></span>
@@ -369,7 +369,7 @@
     </div>
 
     <div class="main-wrapper">
-        <!-- 左侧控制面板 -->
+        <!-- Left control panel -->
         <div class="container">
             <h2>Crypto System</h2>
             <p class="subtitle">Encryption/Decryption Tool</p>
@@ -416,7 +416,7 @@
             </div>
         </div>
 
-        <!-- 右侧终端与GIF -->
+        <!-- Right control panel and GIF -->
         <div class="right-column" style="display: flex; flex-direction: column; gap: 20px;">
             
             <div class="console-wrapper">
@@ -441,7 +441,7 @@
     </div>
 
     <script>
-        // 保证刷新页面时占位符(Placeholder)与下拉菜单当前值同步
+        // Ensure that the placeholder is synchronized with the current value of the dropdown menu when the page is refreshed.
         window.addEventListener('DOMContentLoaded', updateUI);
 
         const delay = ms => new Promise(res => setTimeout(res, ms));
@@ -471,12 +471,12 @@
             if (!text.trim()) return alert("Please enter a valid message to process.");
             
             errorMsg.style.display = 'none';
-            // 提前锁定按钮防止重复执行 - 添加加载态
+            // Lock the button in advance to prevent repeated execution - Add loading state
             encryptBtn.disabled = true; 
             decryptBtn.disabled = true;
             encryptBtn.classList.add('loading');
             decryptBtn.classList.add('loading');
-            // 修改按钮文本和图标
+            // Modify button text and icon
             const encryptText = encryptBtn.querySelector('.btn-text');
             const decryptText = decryptBtn.querySelector('.btn-text');
             const encryptIcon = encryptBtn.querySelector('i');
@@ -502,7 +502,7 @@
                 } 
                 else if (method === 'railfence') {
                     let rails = parseInt(key);
-                    // 加入上限防止极端数值耗尽内存
+                    // Add an upper limit to prevent extreme values ​​from exhausting memory.
                     if (isNaN(rails) || rails < 2 || rails > 1000) throw new Error("Rail Fence requires a row number between 2 and 1000.");
                     resultObj = action === 'encrypt' ? railFenceEncrypt(text, rails) : railFenceDecrypt(text, rails);
                 }
@@ -512,7 +512,7 @@
                 const consoleDiv = document.getElementById('stepConsole');
                 consoleDiv.innerHTML = `<div><span class="prompt">➜</span> <span class="highlight">INITIALIZING ${method.toUpperCase()} ALGORITHM</span>...</div>`;
 
-                // 性能保护：防止文本过长导致动画假死
+                // Performance protection: Prevents animations from freezing due to excessively long text.
                 let displaySteps = resultObj.steps;
                 let omittedCount = 0;
                 if (displaySteps.length > 150) {
@@ -551,12 +551,12 @@
                 errorMsg.style.display = 'block';
                 outputBox.value = "";
             } finally {
-                // 确保在任何情况下（成功或报错）都能重新启用按钮
+                // Ensure the button can be re-enabled under any circumstances (success or error).
                 encryptBtn.disabled = false; 
                 decryptBtn.disabled = false;
                 encryptBtn.classList.remove('loading');
                 decryptBtn.classList.remove('loading');
-                // 恢复按钮文本
+                // Restore button text
                 encryptText.textContent = originalEncryptText;
                 decryptText.textContent = originalDecryptText;
             }
@@ -569,7 +569,7 @@
                 return;
             }
 
-            // 使用现代 API，同时提供对旧环境的兼容
+            // Uses modern APIs while providing compatibility with legacy environments.
             if (navigator.clipboard && window.isSecureContext) {
                 navigator.clipboard.writeText(outputText).then(() => {
                     alert("Result copied to clipboard!");
@@ -588,7 +588,7 @@
             }
         }
 
-        // --- 密码算法 ---
+        // --- Encryption Method ---
         function additiveCipher(text, shift, isDecrypt) {
             let actualShift = isDecrypt ? (26 - (shift % 26)) % 26 : ((shift % 26) + 26) % 26;
             let output = '';
