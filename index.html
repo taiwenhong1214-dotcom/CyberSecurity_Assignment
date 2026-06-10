@@ -4,10 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cryptographic System - Assignment 1</title>
-    
-    <!-- ==========================================
-         SECTION 1: UI DESIGN & STYLING (CSS)
-         ========================================== -->
+
     <style>
         :root {
             --primary: #e6e9ef;
@@ -20,6 +17,8 @@
             --surface: #09110c;
             --border: #4ac9ff;
         }
+
+        /* 纵向布局 */
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: var(--bg);
@@ -27,8 +26,82 @@
             margin: 0;
             padding: 20px;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
         }
+
+        /* ----- 简化版滚动 Banner ----- */
+        .banner-wrapper {
+            width: calc(100% + 40px);
+            margin: -20px -20px 24px -20px;
+            overflow: hidden;
+            background: linear-gradient(90deg, #020d17 0%, #0a1a2e 50%, #020d17 100%);
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+            box-shadow: 0 0 15px rgba(74, 201, 255, 0.2);
+            height: 44px;
+            display: flex;
+            align-items: center;
+            user-select: none;
+        }
+
+        .banner-track {
+            display: flex;
+            align-items: center;
+            white-space: nowrap;
+            animation: marqueeScroll 20s linear infinite;
+            will-change: transform;
+        }
+        
+        .banner-content {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            flex-shrink: 0;
+            padding: 0 20px;
+        }
+
+        .banner-tag {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 1.5px;
+            color: #c8e6ff;
+            text-shadow: 0 0 8px rgba(54, 205, 243, 0.5);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .banner-tag .icon { font-size: 14px; }
+        .banner-tag .highlight-text { color: var(--accent); }
+        .banner-tag .danger-text { color: var(--danger); }
+        .banner-tag .success-text { color: var(--success); }
+
+        .banner-separator {
+            display: inline-block;
+            width: 6px;
+            height: 6px;
+            background: var(--accent);
+            border-radius: 50%;
+            opacity: 0.8;
+            box-shadow: 0 0 8px var(--accent);
+            flex-shrink: 0;
+        }
+
+        @keyframes marqueeScroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        @media (max-width: 950px) {
+            .banner-wrapper { height: 36px; }
+            .banner-tag { font-size: 11px; gap: 4px; }
+            .banner-content { gap: 16px; padding: 0 10px; }
+        }
+
+        /* ----- 主体样式 ----- */
         .main-wrapper {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -57,8 +130,7 @@
         }
         textarea:focus, select:focus, input:focus { outline: none; border-color: var(--accent); }
         textarea { resize: vertical; height: 100px; }
-        input { }
-        
+    
         .btn-group { display: flex; gap: 15px; margin-top: 20px; }
         button {
             flex: 1; padding: 14px; border: none; border-radius: 8px;
@@ -73,10 +145,7 @@
         #btn-copy { background-color: var(--success); margin-top: 10px; width: 100%; }
         #btn-copy:hover { opacity: 0.9; box-shadow: 0 4px 12px rgba(22, 163, 74, 0.3); }
         .error-msg { color: var(--danger); font-size: 0.85em; margin-top: 5px; display: none; font-weight: bold;}
-        
-        /* ==========================================
-           BEAUTIFUL CONSOLE STYLING
-           ========================================== */
+    
         .console-wrapper {
             background-color: #030712;
             border-radius: 12px;
@@ -86,7 +155,7 @@
             flex-direction: column;
             height: 520px;
         }
-        /* Top Window Bar */
+
         .console-header {
             background-color: #111827;
             padding: 12px 16px;
@@ -102,8 +171,7 @@
         .console-title {
             color: #e4e9f0; font-family: 'Courier New', monospace; font-size: 13px; margin-left: auto; margin-right: auto;
         }
-        
-        /* Inner Console Area */
+
         .step-console {
             background-image: radial-gradient(circle at center, #111827 0%, #030712 100%);
             color: #f4f7fa;
@@ -114,8 +182,7 @@
             font-size: 14px;
             line-height: 1.7;
         }
-        
-        /* Line Animation (Slide up & Fade In) */
+
         .step-console div {
             padding: 4px 0;
             border-bottom: 1px dashed rgba(255,255,255,0.05);
@@ -127,7 +194,7 @@
             100% { opacity: 1; transform: translateY(0); }
         }
 
-        /* Typography Formatting inside Console */
+
         .prompt { color: #ec4899; font-weight: bold; margin-right: 6px; text-shadow: 0 0 5px rgba(236, 72, 153, 0.5); }
         .highlight { color: #facc15; font-weight: bold; text-shadow: 0 0 8px rgba(250, 204, 21, 0.4); }
         .success { color: #22d3ee; font-weight: bold; text-shadow: 0 0 8px rgba(34, 211, 238, 0.5); }
@@ -141,7 +208,7 @@
             letter-spacing: 1px;
         }
 
-        /* Custom Dark Scrollbar */
+
         .step-console::-webkit-scrollbar { width: 8px; }
         .step-console::-webkit-scrollbar-track { background: #030712; }
         .step-console::-webkit-scrollbar-thumb { background: #334155; border-radius: 10px; }
@@ -155,317 +222,370 @@
 </head>
 <body>
 
-<div class="main-wrapper">
-    <!-- ==========================================
-         LEFT COLUMN: User Inputs & Controls
-         ========================================== -->
-    <div class="container">
-        <h2>Crypto System</h2>
-        <p class="subtitle">Encryption/Decryption Tool</p>
-
-        <div class="form-group">
-            <label for="inputText">Message (Plaintext):</label>
-            <textarea id="inputText" placeholder="ex: RAFA IS THE KING OF CLAY"></textarea>         
-        </div>
-
-        <div class="form-group">
-            <label for="cipherMethod">Traditional Encryption Algorithm:</label>
-            <select id="cipherMethod" onchange="updateUI()">
-                <option value="additive">1. Additive Cipher</option>
-                <option value="simple">2. Simple Cipher</option>
-                <option value="vigenere">3. Vigenère Cipher</option>
-                <option value="railfence">4. Rail Fence Cipher</option>
-            </select>
-        </div>
-
-        <div class="form-group" id="keyGroup">
-            <label for="cipherKey">Cryptographic Key:</label>
-            <input type="text" id="cipherKey" placeholder="Enter a numerical shift (ex: 8)">
-            <div id="keyError" class="error-msg">Invalid key format.</div>
-        </div>
-
-        <div class="btn-group">
-            <button id="btn-encrypt" onclick="executeProcess('encrypt')">Encrypt Message</button>
-            <button id="btn-decrypt" onclick="executeProcess('decrypt')">Decrypt Message</button>
-        </div>
-
-        <div class="form-group" style="margin-top: 25px;">
-            <label for="outputText">Output Result (Ciphertext):</label>
-            <textarea id="outputText" readonly placeholder="Result will appear here..."></textarea>
-            <button id="btn-copy" onclick="copyToClipboard()">Copy Result</button>
+    <!-- 简化版 Banner -->
+    <div class="banner-wrapper">
+        <div class="banner-track">
+            <!-- 第一部分 -->
+            <div class="banner-content">
+                <span class="banner-tag"><span class="icon">🔐</span> <span class="highlight-text">SYSTEM</span> ONLINE</span>
+                <span class="banner-separator"></span>
+                <span class="banner-tag"><span class="icon">⚡</span> ENGINES <span class="success-text">READY</span></span>
+                <span class="banner-separator"></span>
+                <span class="banner-tag"><span class="icon">🔒</span> SECURE CHANNEL</span>
+                <span class="banner-separator"></span>
+                <span class="banner-tag"><span class="icon">📡</span> PROTOCOL <span class="success-text">TLS 1.3</span></span>
+                <span class="banner-separator"></span>
+                <span class="banner-tag"><span class="icon">💾</span> E2E <span class="highlight-text">ENCRYPTED</span></span>
+                <span class="banner-separator"></span>
+                <span class="banner-tag"><span class="icon">🧬</span> QUANTUM <span class="danger-text">SAFE</span></span>
+            </div>
+            <!-- 第二部分（完整复制实现无缝滚动） -->
+            <div class="banner-content">
+                <span class="banner-tag"><span class="icon">🔐</span> <span class="highlight-text">SYSTEM</span> ONLINE</span>
+                <span class="banner-separator"></span>
+                <span class="banner-tag"><span class="icon">⚡</span> ENGINES <span class="success-text">READY</span></span>
+                <span class="banner-separator"></span>
+                <span class="banner-tag"><span class="icon">🔒</span> SECURE CHANNEL</span>
+                <span class="banner-separator"></span>
+                <span class="banner-tag"><span class="icon">📡</span> PROTOCOL <span class="success-text">TLS 1.3</span></span>
+                <span class="banner-separator"></span>
+                <span class="banner-tag"><span class="icon">💾</span> E2E <span class="highlight-text">ENCRYPTED</span></span>
+                <span class="banner-separator"></span>
+                <span class="banner-tag"><span class="icon">🧬</span> QUANTUM <span class="danger-text">SAFE</span></span>
+            </div>
         </div>
     </div>
 
-    <!-- ==========================================
-         RIGHT COLUMN: Beautiful Live Console & GIF
-         ========================================== -->
-    <div class="right-column" style="display: flex; flex-direction: column; gap: 20px;">
-        
-        <div class="console-wrapper">
-            <!-- MacOS style window header -->
-            <div class="console-header">
-                <span class="dot red"></span>
-                <span class="dot yellow"></span>
-                <span class="dot green"></span>
-                <span class="console-title">Step-by-step Encryption/Decryption</span>
+    <div class="main-wrapper">
+        <!-- 左侧控制面板 -->
+        <div class="container">
+            <h2>Crypto System</h2>
+            <p class="subtitle">Encryption/Decryption Tool</p>
+
+            <div class="form-group">
+                <label for="inputText">Message (Plaintext):</label>
+                <textarea id="inputText" placeholder="ex: RAFA IS THE KING OF CLAY"></textarea>         
             </div>
+
+            <div class="form-group">
+                <label for="cipherMethod">Traditional Encryption Algorithm:</label>
+                <select id="cipherMethod" onchange="updateUI()">
+                    <option value="additive">1. Additive Cipher</option>
+                    <option value="simple">2. Simple Cipher</option>
+                    <option value="vigenere">3. Vigenère Cipher</option>
+                    <option value="railfence">4. Rail Fence Cipher</option>
+                </select>
+            </div>
+
+            <div class="form-group" id="keyGroup">
+                <label for="cipherKey">Cryptographic Key:</label>
+                <input type="text" id="cipherKey" placeholder="Enter a numerical shift (ex: 8)">
+                <div id="keyError" class="error-msg">Invalid key format.</div>
+            </div>
+
+            <div class="btn-group">
+                <button id="btn-encrypt" onclick="executeProcess('encrypt')">Encrypt Message</button>
+                <button id="btn-decrypt" onclick="executeProcess('decrypt')">Decrypt Message</button>
+            </div>
+
+            <div class="form-group" style="margin-top: 25px;">
+                <label for="outputText">Output Result (Ciphertext):</label>
+                <textarea id="outputText" readonly placeholder="Result will appear here..."></textarea>
+                <button id="btn-copy" onclick="copyToClipboard()">Copy Result</button>
+            </div>
+        </div>
+
+        <!-- 右侧终端与GIF -->
+        <div class="right-column" style="display: flex; flex-direction: column; gap: 20px;">
             
-            <!-- Text Output Area -->
-            <div id="stepConsole" class="step-console">
-                <div>
-                    <span class="prompt">➜</span> 
-                    <span class="success">SYSTEM READY.</span> Select an algorithm and execute.</div>
+            <div class="console-wrapper">
+                <div class="console-header">
+                    <span class="dot red"></span>
+                    <span class="dot yellow"></span>
+                    <span class="dot green"></span>
+                    <span class="console-title">Step-by-step Execution</span>
+                </div>
+                <div id="stepConsole" class="step-console">
+                    <div>
+                        <span class="prompt">➜</span> 
+                        <span class="success">SYSTEM READY.</span> Select an algorithm and execute.</div>
+                </div>
             </div>
+
+            <div class="gif-container" style="text-align: center;">
+                <img src="computer.gif" alt="My Custom Animation" style="max-width: 80%; height: 80%;">
+            </div>
+
         </div>
-
-        <!-- GIF PLACED OUTSIDE & BELOW THE CONSOLE WINDOW -->
-        <div class="gif-container" style="text-align: center;">
-            <img src="computer.gif" alt="My Custom Animation" style="max-width: 80%; height: 80%;">
-        </div>
-
-
-
     </div>
-</div>
 
-<!-- ==========================================
-     SECTION 2: JAVASCRIPT SYSTEM LOGIC
-     ========================================== -->
-<script>
-    const delay = ms => new Promise(res => setTimeout(res, ms));
+    <script>
+        // 保证刷新页面时占位符(Placeholder)与下拉菜单当前值同步
+        window.addEventListener('DOMContentLoaded', updateUI);
 
-    function updateUI() {
-        const method = document.getElementById('cipherMethod').value;
-        const keyInput = document.getElementById('cipherKey');
-        document.getElementById('keyError').style.display = 'none';
+        const delay = ms => new Promise(res => setTimeout(res, ms));
 
-        if (method === 'additive') keyInput.placeholder = 'Enter a numerical shift (ex: 8)';
-        else if (method === 'simple') keyInput.placeholder = 'Enter a text keyword (ex: BLUECAT)';
-        else if (method === 'vigenere') keyInput.placeholder = 'Enter a text keyword (ex: TENNIS)';
-        else if (method === 'railfence') keyInput.placeholder = 'Enter number of row stages (ex: 6)';
-    }
+        function updateUI() {
+            const method = document.getElementById('cipherMethod').value;
+            const keyInput = document.getElementById('cipherKey');
+            document.getElementById('keyError').style.display = 'none';
 
-    async function executeProcess(action) {
-        let originalText = document.getElementById('inputText').value;
-        // Preserve all characters
-        // We will uppercase letters but keep spaces/punctuation as is
-        let text = originalText; // keep original spacing
-        
-        const method = document.getElementById('cipherMethod').value;
-        let key = document.getElementById('cipherKey').value.toUpperCase();
-        
-        const errorMsg = document.getElementById('keyError');
-        const outputBox = document.getElementById('outputText');
-        const encryptBtn = document.getElementById('btn-encrypt');
-        const decryptBtn = document.getElementById('btn-decrypt');
-        
-        let resultObj = { output: '', steps: [] };
+            if (method === 'additive') keyInput.placeholder = 'Enter a numerical shift (ex: 8)';
+            else if (method === 'simple') keyInput.placeholder = 'Enter a text keyword (ex: BLUECAT)';
+            else if (method === 'vigenere') keyInput.placeholder = 'Enter a text keyword (ex: TENNIS)';
+            else if (method === 'railfence') keyInput.placeholder = 'Enter number of row stages (ex: 6)';
+        }
 
-        if (!text.trim()) return alert("Please enter a valid message to process.");
-        errorMsg.style.display = 'none';
+        async function executeProcess(action) {
+            const originalText = document.getElementById('inputText').value;
+            const text = originalText;
+            const method = document.getElementById('cipherMethod').value;
+            const key = document.getElementById('cipherKey').value.toUpperCase();
+            const errorMsg = document.getElementById('keyError');
+            const outputBox = document.getElementById('outputText');
+            const encryptBtn = document.getElementById('btn-encrypt');
+            const decryptBtn = document.getElementById('btn-decrypt');
+            let resultObj = { output: '', steps: [] };
 
-        try {
-            if (method === 'additive') {
-                let shift = parseInt(key);
-                if (isNaN(shift)) throw new Error("Additive Cipher requires a numerical key.");
-                resultObj = additiveCipher(text, shift, action === 'decrypt');
-            } 
-            else if (method === 'simple') {
-                if (!/^[A-Z]+$/.test(key)) throw new Error("Simple Cipher requires a keyword (letters only).");
-                resultObj = simpleCipher(text, key, action === 'decrypt');
-            }
-            else if (method === 'vigenere') {
-                if (!/^[A-Z]+$/.test(key)) throw new Error("Vigenère Cipher requires a keyword (letters only).");
-                resultObj = vigenereCipher(text, key, action === 'decrypt');
-            } 
-            else if (method === 'railfence') {
-                let rails = parseInt(key);
-                if (isNaN(rails) || rails < 2) throw new Error("Rail Fence requires a row number of 2 or greater.");
-                resultObj = action === 'encrypt' ? railFenceEncrypt(text, rails) : railFenceDecrypt(text, rails);
-            }
+            if (!text.trim()) return alert("Please enter a valid message to process.");
             
-            // --- CONSOLE ANIMATION PHASE ---
-            encryptBtn.disabled = true; decryptBtn.disabled = true;
-            outputBox.value = "Executing encryption algorithm...";
-            
-            const consoleDiv = document.getElementById('stepConsole');
-            consoleDiv.innerHTML = `<div><span class="prompt">➜</span> <span class="highlight">INITIALIZING ${method.toUpperCase()} ALGORITHM</span>...</div>`;
+            errorMsg.style.display = 'none';
+            // 提前锁定按钮防止重复执行
+            encryptBtn.disabled = true; 
+            decryptBtn.disabled = true;
 
-            // Adjust speed dynamically based on output length
-            const speed = resultObj.steps.length > 20 ? 150 : 400; 
+            try {
+                if (method === 'additive') {
+                    let shift = parseInt(key);
+                    if (isNaN(shift)) throw new Error("Additive Cipher requires a numerical key.");
+                    resultObj = additiveCipher(text, shift, action === 'decrypt');
+                } 
+                else if (method === 'simple') {
+                    if (!/^[A-Z]+$/.test(key)) throw new Error("Simple Cipher requires a keyword (letters only).");
+                    resultObj = simpleCipher(text, key, action === 'decrypt');
+                }
+                else if (method === 'vigenere') {
+                    if (!/^[A-Z]+$/.test(key)) throw new Error("Vigenère Cipher requires a keyword (letters only).");
+                    resultObj = vigenereCipher(text, key, action === 'decrypt');
+                } 
+                else if (method === 'railfence') {
+                    let rails = parseInt(key);
+                    // 加入上限防止极端数值耗尽内存
+                    if (isNaN(rails) || rails < 2 || rails > 1000) throw new Error("Rail Fence requires a row number between 2 and 1000.");
+                    resultObj = action === 'encrypt' ? railFenceEncrypt(text, rails) : railFenceDecrypt(text, rails);
+                }
+                
+                outputBox.value = "Executing encryption algorithm...";
+                
+                const consoleDiv = document.getElementById('stepConsole');
+                consoleDiv.innerHTML = `<div><span class="prompt">➜</span> <span class="highlight">INITIALIZING ${method.toUpperCase()} ALGORITHM</span>...</div>`;
 
-            for (let i = 0; i < resultObj.steps.length; i++) {
-                await delay(speed);
-                const stepLine = document.createElement('div');
-                stepLine.innerHTML = `<span class="prompt">➜</span> ${resultObj.steps[i]}`;
-                consoleDiv.appendChild(stepLine);
+                // 性能保护：防止文本过长导致动画假死
+                let displaySteps = resultObj.steps;
+                let omittedCount = 0;
+                if (displaySteps.length > 150) {
+                    omittedCount = displaySteps.length - 150;
+                    displaySteps = displaySteps.slice(0, 150);
+                }
+
+                const speed = displaySteps.length > 20 ? 40 : 200; 
+
+                for (let i = 0; i < displaySteps.length; i++) {
+                    await delay(speed);
+                    const stepLine = document.createElement('div');
+                    stepLine.innerHTML = `<span class="prompt">➜</span> ${displaySteps[i]}`;
+                    consoleDiv.appendChild(stepLine);
+                    consoleDiv.scrollTop = consoleDiv.scrollHeight;
+                }
+
+                if (omittedCount > 0) {
+                    await delay(speed);
+                    const omitLine = document.createElement('div');
+                    omitLine.innerHTML = `<span class="prompt">➜</span> <span class="highlight">... ${omittedCount} additional steps omitted for performance ...</span>`;
+                    consoleDiv.appendChild(omitLine);
+                    consoleDiv.scrollTop = consoleDiv.scrollHeight;
+                }
+
+                await delay(400);
+                const completeLine = document.createElement('div');
+                completeLine.innerHTML = `<br><span class="prompt">➜</span> <span class="success">${action === 'encrypt' ? 'Encryption' : 'Decryption'} process complete.</span>`;
+                consoleDiv.appendChild(completeLine);
                 consoleDiv.scrollTop = consoleDiv.scrollHeight;
+
+                outputBox.value = resultObj.output;
+                
+            } catch (err) {
+                errorMsg.innerText = err.message;
+                errorMsg.style.display = 'block';
+                outputBox.value = "";
+            } finally {
+                // 确保在任何情况下（成功或报错）都能重新启用按钮
+                encryptBtn.disabled = false; 
+                decryptBtn.disabled = false;
+            }
+        }
+
+        function copyToClipboard() {
+            const outputText = document.getElementById('outputText').value;
+            if (!outputText || outputText === "Executing encryption algorithm...") {
+                alert("No valid result to copy!");
+                return;
             }
 
-            await delay(400);
-            const completeLine = document.createElement('div');
-            completeLine.innerHTML = `<br><span class="prompt">➜</span> <span class="success">Encryption / Decryption process complete.</span>`;
-            consoleDiv.appendChild(completeLine);
-            consoleDiv.scrollTop = consoleDiv.scrollHeight;
+            // 使用现代 API，同时提供对旧环境的兼容
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(outputText).then(() => {
+                    alert("Result copied to clipboard!");
+                }).catch(() => {
+                    alert("Failed to copy text.");
+                });
+            } else {
+                const output = document.getElementById('outputText');
+                output.select();
+                try {
+                    document.execCommand("copy");
+                    alert("Result copied to clipboard!");
+                } catch (err) {
+                    alert("Failed to copy text.");
+                }
+            }
+        }
 
-            outputBox.value = resultObj.output;
-            encryptBtn.disabled = false; decryptBtn.disabled = false;
+        // --- 密码算法 ---
+        function additiveCipher(text, shift, isDecrypt) {
+            let actualShift = isDecrypt ? (26 - (shift % 26)) % 26 : ((shift % 26) + 26) % 26;
+            let output = '';
+            let steps = [`<span class="badge">ADDITIVE</span> Mode: ${isDecrypt ? 'Decrypt' : 'Encrypt'} | Shift: ${shift}`];
             
-        } catch (err) {
-            errorMsg.innerText = err.message;
-            errorMsg.style.display = 'block';
-        }
-    }
-
-    function copyToClipboard() {
-        const output = document.getElementById('outputText');
-        output.select();
-        document.execCommand("copy");
-        alert("Result copied to clipboard!");
-    }
-
-    // ==========================================
-    // ALGORITHMS (PRESERVE NON-LETTERS)
-    // ==========================================
-
-    function additiveCipher(text, shift, isDecrypt) {
-        let actualShift = isDecrypt ? (26 - (shift % 26)) % 26 : ((shift % 26) + 26) % 26;
-        let output = '';
-        let steps = [`<span class="badge">ADDITIVE</span> Mode: ${isDecrypt ? 'Decrypt' : 'Encrypt'} | Shift: ${shift}`];
-        
-        for (let i = 0; i < text.length; i++) {
-            let ch = text[i];
-            if (/[A-Za-z]/.test(ch)) {
-                let upper = ch.toUpperCase();
-                let pCode = upper.charCodeAt(0) - 65;
-                let cCode = (pCode + actualShift) % 26;
-                let newChar = String.fromCharCode(cCode + 65);
-                // Preserve original case? We output uppercase as per typical ciphers.
-                output += newChar;
-                steps.push(`Letter '${upper}' (${pCode}) + ${actualShift} = ${cCode} → '<span class="success">${newChar}</span>'`);
-            } else {
-                output += ch;
-                steps.push(`Preserved non‑letter: '<span class="highlight">${ch}</span>' (unchanged)`);
-            }
-        }
-        return { output, steps };
-    }
-
-    function simpleCipher(text, keyword, isDecrypt) {
-        let steps = [`<span class="badge">SIMPLE</span> Mode: ${isDecrypt ? 'Decrypt' : 'Encrypt'} | Key: ${keyword}`];
-        
-        let uniqueKey = Array.from(new Set(keyword.split(''))).join('');
-        let standardAlpha = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-        let remainingLetters = standardAlpha.split('').filter(char => !uniqueKey.includes(char)).join('');
-        let cipherAlpha = uniqueKey + remainingLetters;
-        
-        steps.push(`Base Matrix: &nbsp;${standardAlpha}`);
-        steps.push(`Cipher Matrix: <span class="success">${cipherAlpha}</span>`);
-        
-        let output = '';
-        for (let i = 0; i < text.length; i++) {
-            let ch = text[i];
-            if (/[A-Za-z]/.test(ch)) {
-                let upper = ch.toUpperCase();
-                if (isDecrypt) {
-                    let index = cipherAlpha.indexOf(upper);
-                    let newChar = standardAlpha[index];
+            for (let i = 0; i < text.length; i++) {
+                let ch = text[i];
+                if (/[A-Za-z]/.test(ch)) {
+                    let upper = ch.toUpperCase();
+                    let pCode = upper.charCodeAt(0) - 65;
+                    let cCode = (pCode + actualShift) % 26;
+                    let newChar = String.fromCharCode(cCode + 65);
                     output += newChar;
-                    steps.push(`Decode: '${upper}' → '<span class="success">${newChar}</span>'`);
+                    steps.push(`Letter '${upper}' (${pCode}) + ${actualShift} = ${cCode} → '<span class="success">${newChar}</span>'`);
                 } else {
-                    let index = standardAlpha.indexOf(upper);
-                    let newChar = cipherAlpha[index];
-                    output += newChar;
-                    steps.push(`Encode: '${upper}' → '<span class="success">${newChar}</span>'`);
+                    output += ch;
+                    steps.push(`Preserved non‑letter: '<span class="highlight">${ch}</span>' (unchanged)`);
                 }
-            } else {
-                output += ch;
-                steps.push(`Preserved non‑letter: '<span class="highlight">${ch}</span>' (unchanged)`);
             }
+            return { output, steps };
         }
-        return { output, steps };
-    }
 
-    function vigenereCipher(text, key, isDecrypt) {
-        let output = '';
-        let steps = [`<span class="badge">VIGENÈRE</span> Mode: ${isDecrypt ? 'Decrypt' : 'Encrypt'} | Key: ${key}`];
-        let keyIndex = 0;
-        
-        for (let i = 0; i < text.length; i++) {
-            let ch = text[i];
-            if (/[A-Za-z]/.test(ch)) {
-                let upper = ch.toUpperCase();
-                let pCode = upper.charCodeAt(0) - 65;
-                let kChar = key.charAt(keyIndex % key.length);
-                let kCode = kChar.charCodeAt(0) - 65;
-                let cCode;
-                if (isDecrypt) {
-                    cCode = (pCode - kCode + 26) % 26;
-                    steps.push(`'${upper}' [${pCode}] - Key '${kChar}' [${kCode}] = ${cCode} → '<span class="success">${String.fromCharCode(cCode + 65)}</span>'`);
+        function simpleCipher(text, keyword, isDecrypt) {
+            let steps = [`<span class="badge">SIMPLE</span> Mode: ${isDecrypt ? 'Decrypt' : 'Encrypt'} | Key: ${keyword}`];
+            let uniqueKey = Array.from(new Set(keyword.split(''))).join('');
+            let standardAlpha = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            let remainingLetters = standardAlpha.split('').filter(char => !uniqueKey.includes(char)).join('');
+            let cipherAlpha = uniqueKey + remainingLetters;
+            steps.push(`Base Matrix: &nbsp;${standardAlpha}`);
+            steps.push(`Cipher Matrix: <span class="success">${cipherAlpha}</span>`);
+            
+            let output = '';
+            for (let i = 0; i < text.length; i++) {
+                let ch = text[i];
+                if (/[A-Za-z]/.test(ch)) {
+                    let upper = ch.toUpperCase();
+                    if (isDecrypt) {
+                        let index = cipherAlpha.indexOf(upper);
+                        let newChar = standardAlpha[index];
+                        output += newChar;
+                        steps.push(`Decode: '${upper}' → '<span class="success">${newChar}</span>'`);
+                    } else {
+                        let index = standardAlpha.indexOf(upper);
+                        let newChar = cipherAlpha[index];
+                        output += newChar;
+                        steps.push(`Encode: '${upper}' → '<span class="success">${newChar}</span>'`);
+                    }
                 } else {
-                    cCode = (pCode + kCode) % 26;
-                    steps.push(`'${upper}' [${pCode}] + Key '${kChar}' [${kCode}] = ${cCode} → '<span class="success">${String.fromCharCode(cCode + 65)}</span>'`);
-                }
-                output += String.fromCharCode(cCode + 65);
-                keyIndex++;
-            } else {
-                output += ch;
-                steps.push(`Preserved non‑letter: '<span class="highlight">${ch}</span>' (unchanged)`);
-            }
-        }
-        return { output, steps };
-    }
-
-    function railFenceEncrypt(text, rails) {
-        // For rail fence, we need to handle non-letters as part of the pattern
-        let fence = Array.from({ length: rails }, () => []);
-        let row = 0, direction = 1;
-        let steps = [`<span class="badge">RAIL FENCE</span> Mode: Encrypt | Rows: ${rails}`];
-        
-        for (let i = 0; i < text.length; i++) {
-            let ch = text[i];
-            fence[row].push(ch);
-            steps.push(`Placing character '<span class="highlight">${ch}</span>' into Row ${row + 1}`);
-            row += direction;
-            if (row === rails - 1 || row === 0) direction *= -1;
-        }
-        
-        steps.push(`Generating final ciphertext by reading rows sequentially...`);
-        let output = fence.map(r => r.join('')).join('');
-        return { output, steps };
-    }
-
-    function railFenceDecrypt(text, rails) {
-        let fence = Array.from({ length: rails }, () => Array(text.length).fill('.'));
-        let row = 0, direction = 1;
-        let steps = [`<span class="badge">RAIL FENCE</span> Mode: Decrypt | Rows: ${rails}`];
-        
-        for (let i = 0; i < text.length; i++) {
-            fence[row][i] = '*';
-            row += direction;
-            if (row === rails - 1 || row === 0) direction *= -1;
-        }
-        
-        steps.push(`Building position markers in matrix...`);
-        let index = 0;
-        for (let r = 0; r < rails; r++) {
-            for (let c = 0; c < text.length; c++) {
-                if (fence[r][c] === '*' && index < text.length) {
-                    fence[r][c] = text[index++];
+                    output += ch;
+                    steps.push(`Preserved non‑letter: '<span class="highlight">${ch}</span>' (unchanged)`);
                 }
             }
+            return { output, steps };
         }
-        
-        steps.push(`Reconstructing original by zig‑zag reading...`);
-        let output = '';
-        row = 0; direction = 1;
-        for (let i = 0; i < text.length; i++) {
-            output += fence[row][i];
-            row += direction;
-            if (row === rails - 1 || row === 0) direction *= -1;
+
+        function vigenereCipher(text, key, isDecrypt) {
+            let output = '';
+            let steps = [`<span class="badge">VIGENÈRE</span> Mode: ${isDecrypt ? 'Decrypt' : 'Encrypt'} | Key: ${key}`];
+            let keyIndex = 0;
+            
+            for (let i = 0; i < text.length; i++) {
+                let ch = text[i];
+                if (/[A-Za-z]/.test(ch)) {
+                    let upper = ch.toUpperCase();
+                    let pCode = upper.charCodeAt(0) - 65;
+                    let kChar = key.charAt(keyIndex % key.length);
+                    let kCode = kChar.charCodeAt(0) - 65;
+                    let cCode;
+                    if (isDecrypt) {
+                        cCode = (pCode - kCode + 26) % 26;
+                        steps.push(`'${upper}' [${pCode}] - Key '${kChar}' [${kCode}] = ${cCode} → '<span class="success">${String.fromCharCode(cCode + 65)}</span>'`);
+                    } else {
+                        cCode = (pCode + kCode) % 26;
+                        steps.push(`'${upper}' [${pCode}] + Key '${kChar}' [${kCode}] = ${cCode} → '<span class="success">${String.fromCharCode(cCode + 65)}</span>'`);
+                    }
+                    output += String.fromCharCode(cCode + 65);
+                    keyIndex++;
+                } else {
+                    output += ch;
+                    steps.push(`Preserved non‑letter: '<span class="highlight">${ch}</span>' (unchanged)`);
+                }
+            }
+            return { output, steps };
         }
-        return { output, steps };
-    }
-</script>
+
+        function railFenceEncrypt(text, rails) {
+            let fence = Array.from({ length: rails }, () => []);
+            let row = 0, direction = 1;
+            let steps = [`<span class="badge">RAIL FENCE</span> Mode: Encrypt | Rows: ${rails}`];
+            
+            for (let i = 0; i < text.length; i++) {
+                let ch = text[i];
+                fence[row].push(ch);
+                steps.push(`Placing character '<span class="highlight">${ch}</span>' into Row ${row + 1}`);
+                row += direction;
+                if (row === rails - 1 || row === 0) direction *= -1;
+            }
+            
+            steps.push(`Generating final ciphertext by reading rows sequentially...`);
+            let output = fence.map(r => r.join('')).join('');
+            return { output, steps };
+        }
+
+        function railFenceDecrypt(text, rails) {
+            let fence = Array.from({ length: rails }, () => Array(text.length).fill('.'));
+            let row = 0, direction = 1;
+            let steps = [`<span class="badge">RAIL FENCE</span> Mode: Decrypt | Rows: ${rails}`];
+            
+            for (let i = 0; i < text.length; i++) {
+                fence[row][i] = '*';
+                row += direction;
+                if (row === rails - 1 || row === 0) direction *= -1;
+            }
+            
+            steps.push(`Building position markers in matrix...`);
+            let index = 0;
+            for (let r = 0; r < rails; r++) {
+                for (let c = 0; c < text.length; c++) {
+                    if (fence[r][c] === '*' && index < text.length) {
+                        fence[r][c] = text[index++];
+                    }
+                }
+            }
+            
+            steps.push(`Reconstructing original by zig‑zag reading...`);
+            let output = '';
+            row = 0; direction = 1;
+            for (let i = 0; i < text.length; i++) {
+                output += fence[row][i];
+                row += direction;
+                if (row === rails - 1 || row === 0) direction *= -1;
+            }
+            return { output, steps };
+        }
+    </script>
 </body>
 </html>
