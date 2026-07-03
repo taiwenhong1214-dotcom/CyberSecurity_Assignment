@@ -230,8 +230,10 @@
             transform: translateY(-2px); 
             box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3); 
         }
-        #btn-copy { background-color: var(--success); margin-top: 10px; width: 100%; }
-        #btn-copy:hover { opacity: 0.9; box-shadow: 0 4px 12px rgba(22, 163, 74, 0.3); }
+        #btn-copy { background-color: var(--success); }
+        #btn-copy:hover { background-color: #15803d; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(22, 163, 74, 0.3); }
+        #btn-clear { background-color: #64748b; }
+        #btn-clear:hover { background-color: #475569; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(100, 116, 139, 0.3); }
         .error-msg { color: var(--danger); font-size: 0.85em; margin-top: 5px; display: none; font-weight: bold;}
     
         .console-wrapper {
@@ -409,10 +411,16 @@
             <div class="form-group" style="margin-top: 25px;">
                 <label for="outputText">Output Result (Ciphertext):</label>
                 <textarea id="outputText" readonly placeholder="Result will appear here..."></textarea>
-                <button id="btn-copy" onclick="copyToClipboard()">
-                    <i class="fas fa-copy"></i>
-                    <span class="btn-text">Copy Result</span>
-                </button>
+                <div class="btn-group" style="margin-top: 10px;">
+                    <button id="btn-copy" onclick="copyToClipboard()">
+                        <i class="fas fa-copy"></i>
+                        <span class="btn-text">Copy Result</span>
+                    </button>
+                    <button id="btn-clear" onclick="clearFields()">
+                        <i class="fas fa-trash"></i>
+                        <span class="btn-text">Clear Fields</span>
+                    </button>
+                </div>
             </div>
         </div>
 
@@ -586,6 +594,15 @@
                     alert("Failed to copy text.");
                 }
             }
+        }
+
+        function clearFields() {
+            document.getElementById('inputText').value = '';
+            document.getElementById('cipherKey').value = '';
+            document.getElementById('outputText').value = '';
+            document.getElementById('keyError').style.display = 'none';
+            const consoleDiv = document.getElementById('stepConsole');
+            consoleDiv.innerHTML = `<div><span class="prompt">➜</span> <span class="success">SYSTEM READY.</span> Select an algorithm and execute.</div>`;
         }
 
         // --- Encryption Method ---
